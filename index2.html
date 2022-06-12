@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="main.css">
+</head>
+<body>
+  <div class="main">
+
+    <form action="" method="POST" class="form" id="form-1">
+      <h3 class="heading">Thành viên đăng ký</h3>
+      <p class="desc">form</p>
+  
+      <div class="spacer"></div>
+  
+      <div class="form-group">
+        <label for="fullname" class="form-label">Tên đầy đủ</label>
+        <input id="fullname" name="fullname" rules="required" type="text" placeholder="VD: Đăng Khoa" class="form-control">
+        <span class="form-message"></span>
+      </div>
+  
+      <div class="form-group">
+        <label for="email" class="form-label">Email</label>
+        <input id="email" name="email" type="text" rules="required|email~khoa nguyen dangkhoa" placeholder="VD: email@domain.com" class="form-control">
+        <span class="form-message"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="c_email" class="form-label">Nhập lại email</label>
+        <input id="c_email" name="c_email" type="text" rules="required|comparewith_email~Email invalid" placeholder="VD: email@domain.com" class="form-control">
+        <span class="form-message"></span>
+      </div>
+  
+      <!-- <div class="form-group">
+        <label for="password" class="form-label">Mật khẩu</label>
+        <input id="password" name="password" type="password" rules="min_6|required" placeholder="Nhập mật khẩu" class="form-control">
+        <span class="form-message"></span>
+      </div>
+  
+      <div class="form-group">
+        <label for="password_confirmation" class="form-label">Nhập lại mật khẩu</label>
+        <input id="password_confirmation" name="password_confirmation" rules="required|comparewith_password" placeholder="Nhập lại mật khẩu" type="password" class="form-control">
+        <span class="form-message"></span>
+      </div> -->
+
+      
+
+      <!-- <div class="form-group">
+        <label for="gender" class="form-label">Giới tính</label>
+        <div class="inline-block">
+          <label><input name="gender" type="radio" value="nam" class="form-control"><span>nam</span></label>
+          <label><input name="gender" type="radio" value="nữ" class="form-control"><span>nữ</span></label>
+        </div>
+        <span class="form-message"></span>
+      </div> -->
+
+      <!-- <div class="form-group">
+        <label for="province" class="form-label">Tỉnh/ Thành Phố</label>
+        <select name="province" id="province" class="form-control">
+          <option value="">Tỉnh/ Thành Phố</option>
+          <option value="Tay Ninh">Tây Ninh</option>
+          <option value="Ho Chi Minh">Hồ Chí Minh</option>
+          <option value="Ha Noi">Hà Nội</option>
+        </select>
+        <span class="form-message"></span>
+      </div> -->
+
+      <!-- <div class="form-group">
+        <label for="gender" class="form-label">現在の職業</label>
+        <div class="inline-block">
+          <label class="i-custom"><input type="radio" name="job" value="高校生" class="require"> <span>高校生</span></label>
+          <label class="i-custom"><input type="radio" name="job" value="大学生" class="require"> <span>大学生</span></label>
+          <label class="i-custom"><input type="radio" name="job" value="大学院生" class="require"> <span>大学院生</span></label>
+          <label class="i-custom"><input type="radio" name="job" value="短大生" class="require"> <span>短大生</span></label>
+        </div>
+        <span class="form-message"></span>
+      </div> -->
+
+      <!-- <div class="form-group">
+        <label for="color" class="form-label">Màu sắc</label>
+        <div class="inline-block">
+          <label><input name="color" type="checkbox" value="xanh" class="form-control"><span>xanh</span></label>
+          <label><input name="color" type="checkbox" value="đỏ" class="form-control"><span>đỏ</span></label>
+          <label><input name="color" type="checkbox" value="tím" class="form-control"><span>tím</span></label>
+        </div>
+        <span class="form-message"></span>
+      </div> -->
+
+      <!-- <div class="form-group">
+        <label for="color" class="form-label">Avatar</label>
+        <div class="inline-block">
+          <label><input name="file" type="file" value="file" class="form-control"></label>
+        </div>
+        <span class="form-message"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="color" class="form-label">Avatar</label>
+        <div class="inline-block">
+          <label><input name="file2" type="file" value="file" class="form-control"></label>
+        </div>
+        <span class="form-message"></span>
+      </div> -->
+  
+      <button class="form-submit">Đăng ký</button>
+    </form>
+  
+  </div>
+  <script src="./jquery-1.11.1.min.js"></script>
+  <script src="./validator2.js"></script>
+  <script>
+    var form=new Validator('#form-1')
+    form.onSubmit=function(formData){
+      console.log(formData);
+    }
+  </script>
+</body>
+</html>

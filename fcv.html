@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="fcv.css">
+</head>
+<body>
+    <div class="fcform fnt-mincho">
+        <div class="fcform__title">採用エントリーフォーム</div>
+        <div class="wrap">
+            <div class="fcform__progress clearfix">
+                <div class="fcform__progress-step fcform__progress-start active"><span>情報の入力</span></div>
+                <div class="fcform__progress-step fcform__progress-confirm"><span>入力内容の確認</span></div>
+                <div class="fcform__progress-step fcform__progress-thanks"><span>受付完了</span></div>
+            </div>
+            <div class="fcform__main">
+                <div class="fc-form" data-display="slide" data-debug="false">
+                    <div class="form-row">
+                        <div class="form-caption vtop">
+                            <div class="caption-inline">
+                                <span class="caption--text" data-for="fullname">お名前</span>
+                                <span class="caption--askerisk">必須</span>
+                            </div>
+                        </div>
+                        <div class="form-value">
+                            <input type="text" name="fullname" value="" placeholder="山田　太郎" class="require">
+                            <div class="error">必須項目です</div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-caption vtop">
+                            <div class="caption-inline">
+                                <span class="caption--text" data-for="gender">性別</span>
+                                <span class="caption--askerisk">必須</span>
+                            </div>
+                        </div>
+                        <div class="form-value">
+                            <div class="i-list">
+                                <label class="i-custom"><input type="radio" name="gender" value="男性" class="require"> <span>男性</span></label>
+                                <label class="i-custom"><input type="radio" name="gender" value="女性" class="require"> <span>女性</span></label>
+                            </div>
+                            <div class="error">必須項目です</div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-caption vtop">
+                            <div class="caption-inline">
+                                <span class="caption--text" data-for="age">年齢</span>
+                                <span class="caption--askerisk">必須</span>
+                            </div>
+                        </div>
+                        <div class="form-value" data-after="歳">
+                            <div class="form-block">
+                                <div class="form-group form-inline">
+                                    <div class="form-box"><input type="number" name="age" value="" min="0" placeholder="30" class="require check-number"></div>
+                                    <div class="form-box">歳</div>
+                                </div>
+                            </div>
+                            <div class="error">必須項目です</div>
+                            <div class="error-number">無効な数値</div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-caption vtop">
+                            <div class="caption-inline">
+                                <span class="caption--text" data-for="phone">お電話番号</span>
+                                <span class="caption--askerisk">必須</span>
+                            </div>
+                        </div>
+                        <div class="form-value">
+                            <input type="text" name="phone" value="" placeholder="012-3456-7890" class="require check-phone">
+                            <div class="error">必須項目です</div>
+                            <div class="error-phone">正しい形式で入力してください</div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-caption vtop">
+                            <div class="caption-inline">
+                                <span class="caption--text" data-for="email">メールアドレス</span>
+                                <span class="caption--askerisk">必須</span>
+                            </div>
+                        </div>
+                        <div class="form-value">
+                            <input type="text" name="email" value="" placeholder="xxx@xxx.com" class="require check-email">
+                            <div class="error">必須項目です</div>
+                            <div class="error-email">正しい形式で入力してください</div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-caption vtop">
+                            <div class="caption-inline">
+                                <span class="caption--text" data-for="job">現在の職業</span>
+                                <span class="caption--askerisk">必須</span>
+                            </div>
+                        </div>
+                        <div class="form-value">
+                            <div class="i-list">
+                                <label class="i-custom"><input type="radio" name="job" value="高校生" class="require"> <span>高校生</span></label>
+                                <label class="i-custom"><input type="radio" name="job" value="大学生" class="require"> <span>大学生</span></label>
+                                <label class="i-custom"><input type="radio" name="job" value="大学院生" class="require"> <span>大学院生</span></label>
+                                <label class="i-custom"><input type="radio" name="job" value="短大生" class="require"> <span>短大生</span></label>
+                                <label class="i-custom"><input type="radio" name="job" value="アルバイト" class="require"> <span>アルバイト</span></label>
+                                <label class="i-custom"><input type="radio" name="job" value="派遣社員" class="require"> <span>派遣社員</span></label>
+                                <label class="i-custom"><input type="radio" name="job" value="正社員" class="require"> <span>正社員</span></label>
+                                <label class="i-custom"><input type="radio" name="job" value="専業主婦" class="require"> <span>専業主婦</span></label>
+                                <label class="i-custom"><input type="radio" name="job" value="パート社員" class="require"> <span>パート社員</span></label>
+                                <label class="i-custom"><input type="radio" name="job" value="その他" class="require"> <span>その他</span></label>
+                            </div>
+                            <div class="error">必須項目です</div>
+                        </div>
+                    </div>
+                    <div class="form-button">
+                        <div class="submit-confirm">
+                            <div class="form-block">
+                                <button type="submit" class="form-submit" data-beforeClick="beforeSend" data-afterClick="afterSend">この内容で送信する</button>
+                            </div>
+                            <div class="form-block">
+                                <button type="button" class="form-back" data-beforeClick="beforeBack" data-afterClick="afterBack">入力を修正する</button>
+                            </div>
+                        </div>
+                        <div class="submit-form">
+                            <div class="form-block">
+                                <button type="submit" class="form-submit" data-beforeClick="beforeConfirm" data-afterClick="afterConfirm">入力内容の確認へ進む</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="thanks" class="fc-thanks">
+                    <p class="thanks-message">予約フォームを受付けました。<br>入力いただいた予約内容はまだ確定ではありません。<br>当店より折り返しご連絡を差し上げてからの、ご予約成立となります。<br>受け取り後2～3営業日以内にはメール、もしくはお電話にてお返事差し上げます。</p>
+                    <p class="thanks-button"><a href="?">サイトへ戻る</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="jquery-1.11.1.min.js"></script>
+    <script src="fcv.js"></script>
+</body>
+</html>
