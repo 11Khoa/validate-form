@@ -8,10 +8,9 @@ function Validator(formSelector) {
     }
     var formRules=[]
     var formElement=document.querySelector(formSelector)
-
-
-    var validatorRules={
+    var validattorRules={
         required:function(value,msgCustome){
+            // var msgCustome=document.querySelector('value')
             return value ? undefined : msgCustome || 'Vui lòng nhập trường này'
         },
         email:function(value,msgCustome){
@@ -39,47 +38,44 @@ function Validator(formSelector) {
     if(!formElement) return
 
     var inputs=formElement.querySelectorAll('[name][rules]')
-    var regex=/[^a-zA-Z0-9_ ~]/gm //chỉ lấy a-z 0-9 và _ với (dấu cách" ")
-
     for (var input of inputs){
-        var rules=input.getAttribute('rules').split(regex)
-        console.log(rules);
+        var rules=input.getAttribute('rules').split('|')
+        var errMsg=input.getAttribute('errMsg')
+        // console.log(input,errMsg);
+        
         for (var rule of rules){
-            var ruleInfo,ruleFunc,ruleMsg
-        //    console.log(rule);
-            var isRuleHasValue=rule.includes('_')
-            var isMsg=rule.includes('~')
-            if(isMsg){
-                console.log(rule);
-                var index=rule.indexOf('~')
-                console.log(rule.slice(index+1));
-            }
+            var ruleInfo,ruleFunc
+            // var regex=/[^a-zA-Z0-9_ ]/gm //chỉ lấy a-z 0-9 và _ với (dấu cách" ")
+            var isRuleHasValue=rule.includes(':')
 
             if(isRuleHasValue){
-                ruleInfo=rule.split('_')
+                ruleInfo=rule.split(':')
                 rule=ruleInfo[0]
-                // if(ruleInfo[2]){
-                //     ruleMsg=ruleInfo[2]
-                //     console.log(validatorRules[rule](ruleInfo[1])(true,ruleMsg));
-                // }
-                // console.log(ruleInfo);
-                console.log(rule);
+                // console.log(validattorRules[rule](ruleInfo[1]));
             }
 
-            ruleFunc=validatorRules[rule]
+            // console.log(rule);
+
+            // console.log(`
+            // ===============
+            // ${validattorRules[rule](true,errMsg)}
+            // ===============`);
+
+            ruleFunc=validattorRules[rule]
+           
 
             if(isRuleHasValue){
                 ruleFunc=ruleFunc(ruleInfo[1])
             }
+
             if(Array.isArray(formRules[input.name])){
                 formRules[input.name].push(ruleFunc)
             }else{
                 // console.log(ruleFunc);
                 formRules[input.name]=[ruleFunc]
             }
-
-            // console.log(formRules);
         }
+
 
         // event check
         input.onblur=handleValidate
@@ -89,14 +85,20 @@ function Validator(formSelector) {
     function handleValidate(e){
         var rules=formRules[e.target.name]
         var errorMessage
+        // var errCustome=this.dataset.errmsg
 
         for(var rule of rules){
             errorMessage= rule(e.target.value)
             if(errorMessage) break
         }
+        
 
         if(errorMessage){
             var formGroup=getParentElement(e.target,'.form-group')
+
+            // if(errCustome){
+            //     errorMessage=errCustome
+            // }
 
             if(formGroup){
                 formGroup.classList.add('invalid')
