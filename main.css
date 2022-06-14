@@ -38,6 +38,10 @@ html {
   font-weight: 300;
 }
 
+/* .form-main{
+  display: flex;
+} */
+
 .form-group {
   display: flex;
   margin-bottom: 16px;
@@ -98,7 +102,7 @@ html {
   padding: 4px 0 0;
 }
 
-.form-submit {
+.confirm-btn {
   outline: none;
   background-color: #1dbfaf;
   margin-top: 12px;
@@ -112,7 +116,7 @@ html {
   cursor: pointer;
 }
 
-.form-submit:hover {
+.confirm-btn:hover {
   background-color: #1ac7b6;
 }
 
@@ -164,4 +168,21 @@ html {
 }
 .fc-loading.no-text:before {
 	content: "";
+}
+
+
+.show {
+  transition: opacity 400ms;
+}
+.hide {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 400ms;
+}
+.form-main .form-back{
+  display: none;
+}
+
+.form-main.form-confirm .form-back{
+  display: block;
 }

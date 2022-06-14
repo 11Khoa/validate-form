@@ -6,31 +6,34 @@ function Validator(formSelector) {
             element=element.parentElement
         }
     }
-    var formRules=[]
+    var formRules={}
     var formElement=document.querySelector(formSelector)
     var validattorRules={
-        required:function(value,msgCustome){
-            // var msgCustome=document.querySelector('value')
-            return value ? undefined : msgCustome || 'Vui lòng nhập trường này'
+        required:function(value){
+            return value ? undefined : 'Vui lòng nhập trường này'
         },
-        email:function(value,msgCustome){
+        email:function(value){
             var regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
-            return regex.test(value) ? undefined : msgCustome || 'Vui lòng nhập email'
+            return regex.test(value) ? undefined : 'Vui lòng nhập đúng địa chỉ email'
         },
         comparewith:function(compare){
-            return function(value,msgCustome){
-                var elementCompare=formElement.querySelector(`input[name="${compare}"]`).value
-                return value===elementCompare ? undefined : msgCustome || `Nội dung không trùng khớp với nhau`
+            return function(value){
+                var elementCompare=formElement.querySelectorAll(`input[name="${compare}"]`)
+                var elementValue=elementCompare[0].value
+                var msgCustome=elementCompare[1].dataset.errormsg
+                // console.log(msgCustome);
+
+                return value===elementValue ? undefined : msgCustome || `Nội dung không trùng khớp với nhau`
             }
         },
         min:function(min){
-            return function(value,msgCustome){
-                return value.length>=min ? undefined : msgCustome || `Nhập ít nhất ${min} ký tự`
+            return function(value){
+                return value.length>=min ? undefined : `Nhập ít nhất ${min} ký tự`
             }
         },
         max:function(max){
-            return function(value,msgCustome){
-                return value.length<=max ? undefined : msgCustome || `Tối đa ${max} ký tự`
+            return function(value){
+                return value.length<=max ? undefined : `Tối đa ${max} ký tự`
             }
         }
     }
@@ -40,8 +43,6 @@ function Validator(formSelector) {
     var inputs=formElement.querySelectorAll('[name][rules]')
     for (var input of inputs){
         var rules=input.getAttribute('rules').split('|')
-        var errMsg=input.getAttribute('errMsg')
-        // console.log(input,errMsg);
         
         for (var rule of rules){
             var ruleInfo,ruleFunc
@@ -54,15 +55,8 @@ function Validator(formSelector) {
                 // console.log(validattorRules[rule](ruleInfo[1]));
             }
 
-            // console.log(rule);
-
-            // console.log(`
-            // ===============
-            // ${validattorRules[rule](true,errMsg)}
-            // ===============`);
-
             ruleFunc=validattorRules[rule]
-           
+        //    console.log(ruleFunc);
 
             if(isRuleHasValue){
                 ruleFunc=ruleFunc(ruleInfo[1])
@@ -77,21 +71,27 @@ function Validator(formSelector) {
         }
 
 
-        // event check
+        // event check every input, non step
+        // ===================================================
+
         input.onblur=handleValidate
         input.oninput=handleClearErr
+
+        // ===================================================
     }
+
+    // var confirmInfo=formElement.querySelector('.form-submit')
+
+    // ===================================================
 
     function handleValidate(e){
         var rules=formRules[e.target.name]
         var errorMessage
-        // var errCustome=this.dataset.errmsg
 
         for(var rule of rules){
             errorMessage= rule(e.target.value)
             if(errorMessage) break
         }
-        
 
         if(errorMessage){
             var formGroup=getParentElement(e.target,'.form-group')
@@ -132,10 +132,10 @@ function Validator(formSelector) {
         }
         // console.log(_this);
         if(isValid){
-
+            var formValues
             if (typeof _this.onSubmit === 'function') {
                 var enableInputs = formElement.querySelectorAll('[name]')
-                var formValues = Array.from(enableInputs).reduce(function (values, input) {
+                formValues = Array.from(enableInputs).reduce(function (values, input) {
                     switch (input.type) {
                         case 'radio':
                             values[input.name] = formElement.querySelector(`input[name="${input.name}"]:checked`).value
@@ -151,6 +151,9 @@ function Validator(formSelector) {
                             }
                             values[input.name].push(input.value)
                             break;
+                        // case 'select-one':
+                        //     console.log(1);
+                        //     break;
                         case 'file':
                             values[input.name]=input.files
                             break;
@@ -161,12 +164,52 @@ function Validator(formSelector) {
                     return values
                 }, {})
 
-                // console.log(formValues);
-                _this.onSubmit({formValues})
+                var formClone=formElement.querySelectorAll('.form-group')
+                var elClone=[]
+                
+                        for(var group of formClone){
+                            var caption=group.getElementsByTagName('label')
+                            var input=group.querySelector('[name]')
+                            // console.log(caption[0].outerHTML);
+                            // var value=group.get
+                            // console.log(formValues[input.name]);  <span class="${input.name}">${formValues[input.name]}</span>
+                            console.log(input.name,'//'+formValues[input.name]);
+                            elClone.push(`
+                                    <div class="form-group">
+                                        <div class="form-caption">${caption[0].outerHTML}</div>
+                                        <div class="form-value">
+                                            
+                                        </div>
+                                    </div>
+                            `)
+                        }
+                var html=`
+                <div class="form-confirm">
+                    ${elClone.join("")}
+                </div>
+                `
+
+                var formMain=formElement.querySelector('.form-main')
+                var formInput=formMain.querySelector('.form-input')
+                var btnBack=formMain.querySelector('form-back')
+                formMain.classList.add('form-confirm')
+                formInput.insertAdjacentHTML("afterend", html);
+                formInput.style.display='none'
+
+
+                // btnBack.addEventListener('click',function(){
+                //     console.log(1);
+                // })
+                // _this.onSubmit({formValues})
             }else{ //submit mặc định
                 formElement.submit()
             }
         }
     }
     // console.log(formRules);
+    
+    //prevent a user close/leave a browser
+    window.onbeforeunload = function(){
+        return '';
+    };
 }
