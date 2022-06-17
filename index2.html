@@ -21,7 +21,7 @@
         <div class="form-input">
           <div class="form-group">
             <label for="fullname" class="form-label">Tên đầy đủ</label>
-            <input id="fullname" name="fullname" rules="required" type="text" placeholder="VD: Đăng Khoa"
+            <input id="fullname" name="fullname" rules="required" type="text"  data-errorMsg="Vui lòng nhập tên" placeholder="VD: Đăng Khoa"
               class="form-control">
             <span class="form-message"></span>
           </div>
@@ -42,7 +42,7 @@
   
           <div class="form-group">
             <label for="password" class="form-label">Mật khẩu</label>
-            <input id="password" name="password" type="password" rules="min:6|required" placeholder="Nhập mật khẩu"
+            <input id="password" name="password" type="password" rules="required|min:6" placeholder="Nhập mật khẩu"
               class="form-control">
             <span class="form-message"></span>
           </div>
@@ -57,8 +57,8 @@
           <div class="form-group">
             <label for="gender" class="form-label">Giới tính</label>
             <div class="inline-block">
-              <label><input name="gender" type="radio" value="nam" class="form-control"><span>nam</span></label>
-              <label><input name="gender" type="radio" value="nữ" class="form-control"><span>nữ</span></label>
+              <label><input name="gender" type="radio" value="nam" class="form-control" rules="required" data-errorMsg="Vui lòng chọn giới tính"><span>nam</span></label>
+              <label><input name="gender" type="radio" value="nữ" class="form-control" rules="required"  data-errorMsg="Vui lòng chọn giới tính"><span>nữ</span></label>
             </div>
             <span class="form-message"></span>
           </div>
@@ -77,26 +77,25 @@
           <div class="form-group">
             <label for="gender" class="form-label">現在の職業</label>
             <div class="inline-block">
-              <label class="i-custom"><input type="radio" name="job" value="高校生" class="require"> <span>高校生</span></label>
-              <label class="i-custom"><input type="radio" name="job" value="大学生" class="require"> <span>大学生</span></label>
-              <label class="i-custom"><input type="radio" name="job" value="大学院生" class="require">
-                <span>大学院生</span></label>
-              <label class="i-custom"><input type="radio" name="job" value="短大生" class="require"> <span>短大生</span></label>
+              <label class="i-custom"><input rules="required" type="radio" name="job" value="高校生"> <span>高校生</span></label>
+              <label class="i-custom"><input rules="required" type="radio" name="job" value="大学生"> <span>大学生</span></label>
+              <label class="i-custom"><input rules="required" type="radio" name="job" value="大学院生"><span>大学院生</span></label>
+              <label class="i-custom"><input rules="required" type="radio" name="job" value="短大生"> <span>短大生</span></label>
             </div>
             <span class="form-message"></span>
           </div>
   
-          <!-- <div class="form-group">
+          <div class="form-group">
             <label for="color" class="form-label">Màu sắc</label>
             <div class="inline-block">
-              <label><input name="color" type="checkbox" value="xanh" class="form-control"><span>xanh</span></label>
-              <label><input name="color" type="checkbox" value="đỏ" class="form-control"><span>đỏ</span></label>
-              <label><input name="color" type="checkbox" value="tím" class="form-control"><span>tím</span></label>
+              <label><input rules="required" name="color" type="checkbox" value="xanh" class="form-control"><span>xanh</span></label>
+              <label><input rules="required" name="color" type="checkbox" value="đỏ" class="form-control"><span>đỏ</span></label>
+              <label><input rules="required" name="color" type="checkbox" value="tím" class="form-control"><span>tím</span></label>
             </div>
             <span class="form-message"></span>
-          </div> -->
+          </div>
   
-          <!-- <div class="form-group">
+          <div class="form-group">
             <label for="color" class="form-label">Avatar</label>
             <div class="inline-block">
               <label><input name="file" type="file" value="file" class="form-control"></label>
@@ -104,7 +103,7 @@
             <span class="form-message"></span>
           </div>
   
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label for="color" class="form-label">Avatar</label>
             <div class="inline-block">
               <label><input name="file2" type="file" value="file" class="form-control"></label>
@@ -120,7 +119,7 @@
     </form>
 
   </div>
-  <script src="./jquery-1.11.1.min.js"></script>
+  <!-- <script src="./jquery-1.11.1.min.js"></script> -->
   <script src="./validator2.js"></script>
   <script>
     var form = new Validator('#form-1')

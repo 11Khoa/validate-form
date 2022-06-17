@@ -101,7 +101,7 @@ function Validator(options) {
                         return values
                     }, {})
 
-                    // console.log(formValues);
+                    console.log(formValues);
                     options.onSubmit({formValues})
                 }else{ //submit mặc định
                     formElement.submit()

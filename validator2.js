@@ -6,15 +6,64 @@ function Validator(formSelector) {
             element=element.parentElement
         }
     }
+
+
+    //https://stackoverflow.com/questions/1960473/get-all-unique-values-in-a-javascript-array-remove-duplicates
+    function onlyUnique(value, index, self) {
+        return self.indexOf(value) === index;
+    }
+
+
+    //https://stackoverflow.com/questions/11246758/how-to-get-unique-values-in-an-array
+    function findUnique(arr, predicate) {
+        var found = {};
+        
+        // found.hasOwnProperty()
+        arr.forEach((d,index) => {
+             found[predicate(d)] = d;
+        });
+        var ob=Object.keys(found).map((key,index) =>{
+            
+            return found[key]
+        }); 
+        return ob
+      }
+      
+      // usage example:
+    //   var a = ['a', 1, 'a', 2, '1'];
+    //   var unique = a.filter(onlyUnique);
+    //   console.log(unique); // ['a', 1, 2, '1']
+
+
+    //https://stackoverflow.com/questions/45593598/check-if-multiple-radio-buttons-are-checked
+    function getCheckedButton(element) {
+        var i = 0;
+        var formValid = false;
+        while (!formValid && i < element.length) {
+            if (element[i].checked) formValid = true;
+            i++;
+        }
+        return formValid
+    }
+    // console.log(getCheckedButton());
     var formRules={}
     var formElement=document.querySelector(formSelector)
     var validattorRules={
-        required:function(value){
-            return value ? undefined : 'Vui lòng nhập trường này'
+        required:function(value,select){
+            var messageCustome=select.dataset.errormsg
+            var radios=formElement.querySelectorAll(`[name="${select.name}"]`)
+            console.log();
+           
+            if(radios[0].type==='radio' || radios[0].type==='checkbox'){
+               value=getCheckedButton(radios)
+            }
+           
+            
+            return value ? undefined : messageCustome || 'Vui lòng nhập trường này'
         },
-        email:function(value){
+        email:function(value,messageCustome){
             var regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
-            return regex.test(value) ? undefined : 'Vui lòng nhập đúng địa chỉ email'
+            return regex.test(value) ? undefined : messageCustome || 'Vui lòng nhập đúng địa chỉ email'
         },
         comparewith:function(compare){
             return function(value){
@@ -86,10 +135,13 @@ function Validator(formSelector) {
 
     function handleValidate(e){
         var rules=formRules[e.target.name]
+        // rules[0](e.target.value,e.target.dataset.errormsg)
         var errorMessage
 
+        // console.log(e.target);
         for(var rule of rules){
-            errorMessage= rule(e.target.value)
+            //truyền giá trị và nội dụng lỗi vào validattorRules.[name]
+            errorMessage= rule(e.target.value,e.target)
             if(errorMessage) break
         }
 
@@ -119,43 +171,51 @@ function Validator(formSelector) {
         }
     }
 
-    formElement.onsubmit=function(e){
+    var btnBeforeSubmit=formElement.querySelector('.form-submit')
+    btnBeforeSubmit.addEventListener('click',function (e) {
         e.preventDefault()
-        
         var inputs=formElement.querySelectorAll('[name][rules]')
         var isValid=true
-
+        // if(!getCheckedButton()){
+        //     console.log(validattorRules.required(1,"nguyen dang khoa"));
+        // }
         for(var input of inputs){
             if(!handleValidate({target:input})){
                 isValid=false
             }
         }
-        // console.log(_this);
+
+
+        var formValues
+        var enableInputs = formElement.querySelectorAll('[name]')
         if(isValid){
-            var formValues
             if (typeof _this.onSubmit === 'function') {
-                var enableInputs = formElement.querySelectorAll('[name]')
                 formValues = Array.from(enableInputs).reduce(function (values, input) {
                     switch (input.type) {
                         case 'radio':
                             values[input.name] = formElement.querySelector(`input[name="${input.name}"]:checked`).value
                             break
                         case 'checkbox':
+                            
                             if(!input.matches(':checked')){
-                                values[input.name]=[]
                                 return values
                             }
 
                             if(!Array.isArray(values[input.name])){
                                 values[input.name]=[]
                             }
+                            
                             values[input.name].push(input.value)
                             break;
-                        // case 'select-one':
-                        //     console.log(1);
-                        //     break;
+                        case 'select-one':
+                            if(input.selectedIndex>0){
+                                values[input.name]=input.options[input.selectedIndex].text
+                            }
+                            break;
                         case 'file':
-                            values[input.name]=input.files
+                            if(input.files.length>0){
+                                values[input.name]=input.files
+                            }
                             break;
                         default:
                             values[input.name] = input.value
@@ -165,51 +225,162 @@ function Validator(formSelector) {
                 }, {})
 
                 var formClone=formElement.querySelectorAll('.form-group')
-                var elClone=[]
-                
-                        for(var group of formClone){
-                            var caption=group.getElementsByTagName('label')
-                            var input=group.querySelector('[name]')
-                            // console.log(caption[0].outerHTML);
-                            // var value=group.get
-                            // console.log(formValues[input.name]);  <span class="${input.name}">${formValues[input.name]}</span>
-                            console.log(input.name,'//'+formValues[input.name]);
-                            elClone.push(`
-                                    <div class="form-group">
-                                        <div class="form-caption">${caption[0].outerHTML}</div>
-                                        <div class="form-value">
-                                            
-                                        </div>
-                                    </div>
-                            `)
-                        }
+                var elClone=[], keyClone=[], valueClone=[]
+
+                for(var group of formClone){
+                    var value=group.querySelector('.form-label').innerText
+                    var key=group.querySelector('[name]').getAttribute('name')
+                    
+                    // elClone.push(key)
+                    
+                }
+                // console.log(elClone);
+                // console.log(findUnique(elClone, (item) => item.key));
+                // console.log(elClone.filter(onlyUnique));
+                        // elClone.push(`
+                        //             <div class="form-group">
+                        //                 <div class="form-caption">${caption[0].outerHTML}</div>
+                        //                 <div class="form-value">
+                        //                     <span class="${input.name}">${formValues[input.name]}</span>
+                        //                 </div>
+                        //             </div>
+                        //     `)
                 var html=`
                 <div class="form-confirm">
                     ${elClone.join("")}
                 </div>
                 `
 
-                var formMain=formElement.querySelector('.form-main')
-                var formInput=formMain.querySelector('.form-input')
-                var btnBack=formMain.querySelector('form-back')
-                formMain.classList.add('form-confirm')
-                formInput.insertAdjacentHTML("afterend", html);
-                formInput.style.display='none'
+                // var formMain=formElement.querySelector('.form-main')
+                // var formInput=formMain.querySelector('.form-input')
+                // var btnBack=formMain.querySelector('form-back')
+                // formMain.classList.add('form-confirm')
+                // formInput.insertAdjacentHTML("afterend", html);
+                // formInput.style.display='none'
 
 
                 // btnBack.addEventListener('click',function(){
                 //     console.log(1);
                 // })
                 // _this.onSubmit({formValues})
+
+
+
+                console.log(formValues);
+
+
             }else{ //submit mặc định
                 formElement.submit()
             }
         }
-    }
+    })
+
+
+    //=========================================================================
+    // formElement.onsubmit=function(e){
+    //     e.preventDefault()
+        
+    //     var inputs=formElement.querySelectorAll('[name][rules]')
+    //     var isValid=true
+
+    //     for(var input of inputs){
+    //         if(!handleValidate({target:input})){
+    //             isValid=false
+    //         }
+    //     }
+    //     // console.log(_this);
+    //     if(isValid){
+    //         var formValues
+    //         if (typeof _this.onSubmit === 'function') {
+    //             var enableInputs = formElement.querySelectorAll('[name]')
+    //             // console.log(enableInputs);
+    //             formValues = Array.from(enableInputs).reduce(function (values, input) {
+    //                 switch (input.type) {
+    //                     case 'radio':
+    //                         values[input.name] = formElement.querySelector(`input[name="${input.name}"]:checked`).value
+    //                         // console.log(values[input.name]);
+    //                         break
+    //                     case 'checkbox':
+                            
+    //                         if(!input.matches(':checked')){
+    //                             return values
+    //                         }
+
+    //                         if(!Array.isArray(values[input.name])){
+    //                             values[input.name]=[]
+    //                         }
+                            
+    //                         values[input.name].push(input.value)
+    //                         break;
+    //                     case 'select-one':
+    //                         if(input.selectedIndex>0){
+    //                             values[input.name]=input.options[input.selectedIndex].text
+    //                         }
+    //                         break;
+    //                     case 'file':
+    //                         if(input.files.length>0){
+    //                             values[input.name]=input.files
+    //                         }
+    //                         break;
+    //                     default:
+    //                         values[input.name] = input.value
+    //                         break;
+    //                 }
+    //                 // console.log(values);
+    //                 return values
+    //             }, {})
+
+    //             var formClone=formElement.querySelectorAll('.form-group')
+    //             var elClone=[]
+                
+    //                     for(var group of formClone){
+    //                         var caption=group.getElementsByTagName('label')
+    //                         var input=group.querySelector('[name]')
+    //                         // console.log(caption[0].outerHTML);
+    //                         // var value=group.get
+    //                         // console.log(formValues[input.name]);  <span class="${input.name}">${formValues[input.name]}</span>
+    //                         // console.log(input.name,'//'+formValues[input.name]);
+
+    //                         elClone.push(`
+    //                                 <div class="form-group">
+    //                                     <div class="form-caption">${caption[0].outerHTML}</div>
+    //                                     <div class="form-value">
+    //                                         <span class="${input.name}">${formValues[input.name]}</span>
+    //                                     </div>
+    //                                 </div>
+    //                         `)
+    //                     }
+    //             var html=`
+    //             <div class="form-confirm">
+    //                 ${elClone.join("")}
+    //             </div>
+    //             `
+
+    //             // var formMain=formElement.querySelector('.form-main')
+    //             // var formInput=formMain.querySelector('.form-input')
+    //             // var btnBack=formMain.querySelector('form-back')
+    //             // formMain.classList.add('form-confirm')
+    //             // formInput.insertAdjacentHTML("afterend", html);
+    //             // formInput.style.display='none'
+
+
+    //             // btnBack.addEventListener('click',function(){
+    //             //     console.log(1);
+    //             // })
+    //             // _this.onSubmit({formValues})
+    //             console.log(formValues);
+    //         }else{ //submit mặc định
+    //             formElement.submit()
+    //         }
+    //     }
+    // }
+    //=========================================================================
+
+
     // console.log(formRules);
     
     //prevent a user close/leave a browser
-    window.onbeforeunload = function(){
-        return '';
-    };
+    // window.onbeforeunload = function(){
+    //     return '';
+    // };
 }
