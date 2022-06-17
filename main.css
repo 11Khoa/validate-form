@@ -173,14 +173,41 @@ html {
 
 .show {
   transition: opacity 400ms;
+  opacity: 1;
 }
 .hide {
   opacity: 0;
   visibility: hidden;
-  transition: opacity 400ms;
+}
+.form-main >*[class^=form]{
+  transition: .4s;
 }
 .form-main .form-back{
   display: none;
+}
+
+.form-main .form-confirm .form-group{
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.form-main .form-confirm .form-group [for^=file]{
+  width: 100%;
+}
+
+.form-main .form-confirm .form-group [for^=file] + * img{
+  max-width: 100%;
+  height: auto;
+}
+
+.form-main .form-confirm .form-group label{
+  padding-bottom: 0;
+  margin-right: 10px;
+}
+
+.form-main .form-confirm .form-group span{
+  font-size: 14px;
 }
 
 .form-main.form-confirm .form-back{

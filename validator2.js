@@ -28,11 +28,27 @@ function Validator(formSelector) {
         }); 
         return ob
       }
-      
-      // usage example:
-    //   var a = ['a', 1, 'a', 2, '1'];
-    //   var unique = a.filter(onlyUnique);
-    //   console.log(unique); // ['a', 1, 2, '1']
+        // usage example:
+        // var a = ['a', 1, 'a', 2, '1'];
+        // var unique = a.filter(onlyUnique);
+        // console.log(unique); // ['a', 1, 2, '1']
+
+    
+        // https://stackoverflow.com/questions/51537568/how-to-get-unique-values-from-object-array-javascript
+        function unique(data) {
+            var resArr = [];
+            data.filter(function(item){
+            var i = resArr.findIndex(x => 
+                (x.key == item.key));
+            if(i <= -1){
+                // console.log(item.value);
+                    resArr.push(item);
+            }
+            return null;
+            });
+            return resArr
+        }
+        //================================================
 
 
     //https://stackoverflow.com/questions/45593598/check-if-multiple-radio-buttons-are-checked
@@ -140,7 +156,7 @@ function Validator(formSelector) {
 
         // console.log(e.target);
         for(var rule of rules){
-            //truyền giá trị và nội dụng lỗi vào validattorRules.[name]
+            //add value and element to validattorRules.[name]
             errorMessage= rule(e.target.value,e.target)
             if(errorMessage) break
         }
@@ -172,6 +188,9 @@ function Validator(formSelector) {
     }
 
     var btnBeforeSubmit=formElement.querySelector('.form-submit')
+    var formMain=formElement.querySelector('.form-main')
+    var formInput=formMain.querySelector('.form-input')
+    var btnBack=formMain.querySelector('.form-back')
     btnBeforeSubmit.addEventListener('click',function (e) {
         e.preventDefault()
         var inputs=formElement.querySelectorAll('[name][rules]')
@@ -225,54 +244,81 @@ function Validator(formSelector) {
                 }, {})
 
                 var formClone=formElement.querySelectorAll('.form-group')
-                var elClone=[], keyClone=[], valueClone=[]
+                var elClone=[]
+                
 
                 for(var group of formClone){
-                    var value=group.querySelector('.form-label').innerText
+                    var title=group.querySelector('.form-label').innerText
                     var key=group.querySelector('[name]').getAttribute('name')
                     
-                    // elClone.push(key)
+                    elClone.push({
+                        key:key,
+                        title:title
+                    })
                     
                 }
-                // console.log(elClone);
-                // console.log(findUnique(elClone, (item) => item.key));
-                // console.log(elClone.filter(onlyUnique));
-                        // elClone.push(`
-                        //             <div class="form-group">
-                        //                 <div class="form-caption">${caption[0].outerHTML}</div>
-                        //                 <div class="form-value">
-                        //                     <span class="${input.name}">${formValues[input.name]}</span>
-                        //                 </div>
-                        //             </div>
-                        //     `)
+
+                var title=unique(elClone)
+                
+                // console.log(title);
+                var elementGroup=[]
+                Object.keys(title).forEach(key=>{
+                    // console.log(title[key].title,formValues[title[key].key]);
+                    if(formValues[title[key].key]){
+                        if(/(file)/.test(title[key].key)){
+                            // console.log(formValues[title[key].key][0].name);
+                            elementGroup.push(`
+                                <div class="form-group">
+                                    <label for="${title[key].key}" class="form-label">${title[key].title}:</label>
+                                    <div class="form-value">
+                                        <span class="${title[key].key}">${formValues[title[key].key][0].name}</span>
+                                    </div>
+                                </div>
+                            `)
+                        }else{
+                            elementGroup.push(`
+                                <div class="form-group">
+                                    <label for="${title[key].key}" class="form-label">${title[key].title}:</label>
+                                    <div class="form-value">
+                                        <span class="${title[key].key}">${formValues[title[key].key]}</span>
+                                    </div>
+                                </div>
+                            `)
+                        }
+                    }
+                   
+                })
                 var html=`
                 <div class="form-confirm">
-                    ${elClone.join("")}
+                    ${elementGroup.join("")}
                 </div>
                 `
 
-                // var formMain=formElement.querySelector('.form-main')
-                // var formInput=formMain.querySelector('.form-input')
-                // var btnBack=formMain.querySelector('form-back')
-                // formMain.classList.add('form-confirm')
-                // formInput.insertAdjacentHTML("afterend", html);
-                // formInput.style.display='none'
+                // console.log(html);
+                
+                formInput.insertAdjacentHTML("afterend", html);
+                formInput.style.display='none'
+                btnBack.style.display='block'
 
-
-                // btnBack.addEventListener('click',function(){
-                //     console.log(1);
-                // })
+                
                 // _this.onSubmit({formValues})
 
 
 
-                console.log(formValues);
+                // console.log(formValues);
 
 
             }else{ //submit mặc định
                 formElement.submit()
             }
         }
+    })
+    btnBack.addEventListener('click',function(e){
+        e.preventDefault()
+        var formConfirm=formMain.querySelector('.form-confirm')
+        formConfirm.remove()
+        formInput.style.display='block'
+        btnBack.style.display='none'
     })
 
 

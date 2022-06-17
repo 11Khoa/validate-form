@@ -20,7 +20,7 @@
       <div class="form-main">
         <div class="form-input">
           <div class="form-group">
-            <label for="fullname" class="form-label">Tên đầy đủ</label>
+            <label for="fullname" class="form-label">Tên</label>
             <input id="fullname" name="fullname" rules="required" type="text"  data-errorMsg="Vui lòng nhập tên" placeholder="VD: Đăng Khoa"
               class="form-control">
             <span class="form-message"></span>
@@ -103,13 +103,13 @@
             <span class="form-message"></span>
           </div>
   
-          <!-- <div class="form-group">
+          <div class="form-group">
             <label for="color" class="form-label">Avatar</label>
             <div class="inline-block">
               <label><input name="file2" type="file" value="file" class="form-control"></label>
             </div>
             <span class="form-message"></span>
-          </div> -->
+          </div>
   
           
         </div>
@@ -126,9 +126,6 @@
     form.onSubmit = function (formData) {
       console.log(formData);
     }
-    // $('body').on('click', '.form-back',function () {
-    //   alert(1)
-    // })
  
   </script>
 </body>
