@@ -171,19 +171,25 @@ html {
 }
 
 
-.show {
-  transition: opacity 400ms;
-  opacity: 1;
-}
-.hide {
+.form-main.confirm-main .form-input,
+.form-main.confirm-main .before-submit{
   opacity: 0;
   visibility: hidden;
+  display: none;
+  position: absolute;
+  transition: 1s;
 }
 .form-main >*[class^=form]{
   transition: .4s;
 }
-.form-main .form-back{
+.form-main .form-back,
+.form-main .after-submit{
   display: none;
+}
+
+.form-main.confirm-main .form-back,
+.form-main.confirm-main .after-submit{
+  display: block;
 }
 
 .form-main .form-confirm .form-group{

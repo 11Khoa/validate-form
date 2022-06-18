@@ -187,10 +187,14 @@ function Validator(formSelector) {
         }
     }
 
-    var btnBeforeSubmit=formElement.querySelector('.form-submit')
     var formMain=formElement.querySelector('.form-main')
+
     var formInput=formMain.querySelector('.form-input')
+    var btnBeforeSubmit=formMain.querySelector('.before-submit')
+    var btnAfterSubmit=formMain.querySelector('.after-submit')
     var btnBack=formMain.querySelector('.form-back')
+    var html
+
     btnBeforeSubmit.addEventListener('click',function (e) {
         e.preventDefault()
         var inputs=formElement.querySelectorAll('[name][rules]')
@@ -288,7 +292,7 @@ function Validator(formSelector) {
                     }
                    
                 })
-                var html=`
+                html=`
                 <div class="form-confirm">
                     ${elementGroup.join("")}
                 </div>
@@ -296,9 +300,14 @@ function Validator(formSelector) {
 
                 // console.log(html);
                 
+                // var btnAfterSubmitHTML=`<button class="confirm-btn after-submit form-submit">${this.innerText}</button>`
+                // formInput.insertAdjacentHTML("afterend", btnAfterSubmitHTML);
                 formInput.insertAdjacentHTML("afterend", html);
-                formInput.style.display='none'
-                btnBack.style.display='block'
+                formMain.classList.add('confirm-main')
+
+
+                // this.classList.remove('before-submit')
+                // this.classList.add('after-submit')
 
                 
                 // _this.onSubmit({formValues})
@@ -313,113 +322,21 @@ function Validator(formSelector) {
             }
         }
     })
+
     btnBack.addEventListener('click',function(e){
         e.preventDefault()
         var formConfirm=formMain.querySelector('.form-confirm')
         formConfirm.remove()
-        formInput.style.display='block'
-        btnBack.style.display='none'
+        formMain.classList.remove('confirm-main')
     })
 
+    if(btnAfterSubmit){
+        btnAfterSubmit.addEventListener('click',function (e) {
+            e.preventDefault()
+            _this.onSubmit(html)
+        })
+    }
 
-    //=========================================================================
-    // formElement.onsubmit=function(e){
-    //     e.preventDefault()
-        
-    //     var inputs=formElement.querySelectorAll('[name][rules]')
-    //     var isValid=true
-
-    //     for(var input of inputs){
-    //         if(!handleValidate({target:input})){
-    //             isValid=false
-    //         }
-    //     }
-    //     // console.log(_this);
-    //     if(isValid){
-    //         var formValues
-    //         if (typeof _this.onSubmit === 'function') {
-    //             var enableInputs = formElement.querySelectorAll('[name]')
-    //             // console.log(enableInputs);
-    //             formValues = Array.from(enableInputs).reduce(function (values, input) {
-    //                 switch (input.type) {
-    //                     case 'radio':
-    //                         values[input.name] = formElement.querySelector(`input[name="${input.name}"]:checked`).value
-    //                         // console.log(values[input.name]);
-    //                         break
-    //                     case 'checkbox':
-                            
-    //                         if(!input.matches(':checked')){
-    //                             return values
-    //                         }
-
-    //                         if(!Array.isArray(values[input.name])){
-    //                             values[input.name]=[]
-    //                         }
-                            
-    //                         values[input.name].push(input.value)
-    //                         break;
-    //                     case 'select-one':
-    //                         if(input.selectedIndex>0){
-    //                             values[input.name]=input.options[input.selectedIndex].text
-    //                         }
-    //                         break;
-    //                     case 'file':
-    //                         if(input.files.length>0){
-    //                             values[input.name]=input.files
-    //                         }
-    //                         break;
-    //                     default:
-    //                         values[input.name] = input.value
-    //                         break;
-    //                 }
-    //                 // console.log(values);
-    //                 return values
-    //             }, {})
-
-    //             var formClone=formElement.querySelectorAll('.form-group')
-    //             var elClone=[]
-                
-    //                     for(var group of formClone){
-    //                         var caption=group.getElementsByTagName('label')
-    //                         var input=group.querySelector('[name]')
-    //                         // console.log(caption[0].outerHTML);
-    //                         // var value=group.get
-    //                         // console.log(formValues[input.name]);  <span class="${input.name}">${formValues[input.name]}</span>
-    //                         // console.log(input.name,'//'+formValues[input.name]);
-
-    //                         elClone.push(`
-    //                                 <div class="form-group">
-    //                                     <div class="form-caption">${caption[0].outerHTML}</div>
-    //                                     <div class="form-value">
-    //                                         <span class="${input.name}">${formValues[input.name]}</span>
-    //                                     </div>
-    //                                 </div>
-    //                         `)
-    //                     }
-    //             var html=`
-    //             <div class="form-confirm">
-    //                 ${elClone.join("")}
-    //             </div>
-    //             `
-
-    //             // var formMain=formElement.querySelector('.form-main')
-    //             // var formInput=formMain.querySelector('.form-input')
-    //             // var btnBack=formMain.querySelector('form-back')
-    //             // formMain.classList.add('form-confirm')
-    //             // formInput.insertAdjacentHTML("afterend", html);
-    //             // formInput.style.display='none'
-
-
-    //             // btnBack.addEventListener('click',function(){
-    //             //     console.log(1);
-    //             // })
-    //             // _this.onSubmit({formValues})
-    //             console.log(formValues);
-    //         }else{ //submit mặc định
-    //             formElement.submit()
-    //         }
-    //     }
-    // }
     //=========================================================================
 
 

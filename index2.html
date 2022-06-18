@@ -113,18 +113,40 @@
   
           
         </div>
-        <button class="confirm-btn form-submit">Đăng ký</button>
+        <button class="confirm-btn before-submit">Đăng ký</button>
+        <button class="confirm-btn after-submit">Đăng ký</button>
         <button class="confirm-btn form-back">Back</button>
       </div>
     </form>
 
   </div>
-  <!-- <script src="./jquery-1.11.1.min.js"></script> -->
+  <script src="./jquery-1.11.1.min.js"></script>
   <script src="./validator2.js"></script>
   <script>
     var form = new Validator('#form-1')
     form.onSubmit = function (formData) {
-      console.log(formData);
+      $.ajax({
+            url: 'http://localhost:3000/email/send',
+            type: 'POST',
+            dataType: 'json',
+            data:JSON.stringify(formData),
+            beforeSend: function() {
+              if ($(".fc-loading").length < 1) $("body").append('<div class="fc-loading" />');
+                $(".fc-loading").addClass("active");
+                // elm.find("button").prop("disabled", true);
+            },
+            success: function(json) {
+              console.log(json);
+              if (json.status == "success") {
+                $(".fc-loading").removeClass("active");
+              }
+            },
+            error: function(json){
+              alert(json.error)
+              console.log(json.error);
+              $(".fc-loading").removeClass("active");
+            }
+        })
     }
  
   </script>
