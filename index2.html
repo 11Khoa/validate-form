@@ -104,7 +104,7 @@
           </div>
   
           <div class="form-group">
-            <label for="color" class="form-label">Avatar</label>
+            <label for="color" class="form-label">Avatar1</label>
             <div class="inline-block">
               <label><input name="file2" type="file" value="file" class="form-control"></label>
             </div>
@@ -118,18 +118,40 @@
         <button class="confirm-btn form-back">Back</button>
       </div>
     </form>
-
+    <div class="cursor" id="cursor"></div>
   </div>
   <script src="./jquery-1.11.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.6/gsap.min.js"></script>
   <script src="./validator2.js"></script>
+  <!-- <script src="./main.js"></script> -->
   <script>
     var form = new Validator('#form-1')
     form.onSubmit = function (formData) {
+      var json=JSON.stringify(formData)
+     console.log(json);
+
+    //  var http = new XMLHttpRequest();
+    // var url = 'http://localhost:3000/mailform';
+    // var params = JSON.stringify(formData);
+    // http.open('POST', url, true);
+
+    // //Send the proper header information along with the request
+    // http.setRequestHeader('Content-type', 'application/json');
+
+    // http.onreadystatechange = function() {//Call a function when the state changes.
+    //     if(http.readyState == 4 && http.status == 200) {
+    //         alert(http.responseText);
+    //     }
+    // }
+    // http.send(formData);
+
       $.ajax({
-            url: 'http://localhost:3000/email/send',
+            url: 'http://localhost:3000/mailform',
             type: 'POST',
-            dataType: 'json',
-            data:JSON.stringify(formData),
+            crossDomain: true,
+            contentType: 'application/json',
+            data:json,
+            
             beforeSend: function() {
               if ($(".fc-loading").length < 1) $("body").append('<div class="fc-loading" />');
                 $(".fc-loading").addClass("active");

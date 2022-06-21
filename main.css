@@ -219,3 +219,32 @@ html {
 .form-main.form-confirm .form-back{
   display: block;
 }
+
+
+
+
+
+.cursor {
+  /* opacity: 0; */
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 50%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  -webkit-transform-origin: 100% 100%;
+  -ms-transform-origin: 100% 100%;
+  transform-origin: 100% 100%;
+  mix-blend-mode: difference;
+  background: transparent;
+  z-index: 999;
+}
+
+.link-grow {
+  background: white;
+  opacity: 1;
+}

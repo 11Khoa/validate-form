@@ -193,7 +193,7 @@ function Validator(formSelector) {
     var btnBeforeSubmit=formMain.querySelector('.before-submit')
     var btnAfterSubmit=formMain.querySelector('.after-submit')
     var btnBack=formMain.querySelector('.form-back')
-    var html
+    var html,formData=[],formValues
 
     btnBeforeSubmit.addEventListener('click',function (e) {
         e.preventDefault()
@@ -207,9 +207,6 @@ function Validator(formSelector) {
                 isValid=false
             }
         }
-
-
-        var formValues
         var enableInputs = formElement.querySelectorAll('[name]')
         if(isValid){
             if (typeof _this.onSubmit === 'function') {
@@ -297,24 +294,37 @@ function Validator(formSelector) {
                     ${elementGroup.join("")}
                 </div>
                 `
-
-                // console.log(html);
-                
-                // var btnAfterSubmitHTML=`<button class="confirm-btn after-submit form-submit">${this.innerText}</button>`
-                // formInput.insertAdjacentHTML("afterend", btnAfterSubmitHTML);
+                // insert confirm form in DOM
                 formInput.insertAdjacentHTML("afterend", html);
                 formMain.classList.add('confirm-main')
-
-
-                // this.classList.remove('before-submit')
-                // this.classList.add('after-submit')
-
                 
+                // merge data
+                title.forEach(item => {
+                    // console.log(item.key);
+                    if(!formValues[item.key]) return
+                    // formData[item.title]=formValues[item.key]
+                    if(Array.isArray(formValues[item.key])){
+                        formData.push({
+                            // key: item.key,
+                            title: item.title,
+                            value: formValues[item.key].toString()
+                        })
+                    }else{
+                        formData.push({
+                            // key: item.key,
+                            title: item.title,
+                            value: formValues[item.key]
+                        })
+                    }
+                })
+
+                // console.log(formData);
+
                 // _this.onSubmit({formValues})
 
 
 
-                // console.log(formValues);
+                console.log(formValues);
 
 
             }else{ //submit mặc định
@@ -327,13 +337,14 @@ function Validator(formSelector) {
         e.preventDefault()
         var formConfirm=formMain.querySelector('.form-confirm')
         formConfirm.remove()
+        formData=[]
         formMain.classList.remove('confirm-main')
     })
 
     if(btnAfterSubmit){
         btnAfterSubmit.addEventListener('click',function (e) {
             e.preventDefault()
-            _this.onSubmit(html)
+            _this.onSubmit(formData)
         })
     }
 
